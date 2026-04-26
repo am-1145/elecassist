@@ -1,0 +1,13 @@
+node_modules
+dist
+.env
+.env.local
+.git
+.gitignore
+Dockerfile
+.dockerignore
+npm-debug.log
+README.md
+jest.config.cjs
+src/**/*.test.tsx
+src/**/*.test.ts
