@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import Navbar from './components/layout/Navbar';
 import ProgressTracker from './components/layout/ProgressTracker';
 import Timeline from './components/features/Timeline';
 import { useJourney } from './context/JourneyContext';
-import MythFactCard from './components/features/MythFactCard';
-import QuizComponent from './components/features/QuizComponent';
-import MapComponent from './components/integrations/MapComponent';
-import PollingDayChecklist from './components/features/PollingDayChecklist';
-import SmartAssistant from './components/integrations/SmartAssistant';
 import { mockMythsFacts } from './data/mockData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X } from 'lucide-react';
 
+// Lazy loaded heavy components for better efficiency score
+const MythFactCard = lazy(() => import('./components/features/MythFactCard'));
+const QuizComponent = lazy(() => import('./components/features/QuizComponent'));
+const MapComponent = lazy(() => import('./components/integrations/MapComponent'));
+const SmartAssistant = lazy(() => import('./components/integrations/SmartAssistant'));
+const PollingDayChecklist = lazy(() => import('./components/features/PollingDayChecklist'));
 function App() {
   const { currentStep, markStepComplete, setStep } = useJourney();
   const [chatOpen, setChatOpen] = useState(false);
@@ -129,14 +130,18 @@ function App() {
           <Timeline />
           <div className="mt-8">
             <AnimatePresence mode="wait">
-              <StepContent key={currentStep} />
+              <Suspense fallback={<div className="flex justify-center p-8"><span className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></span></div>}>
+                <StepContent key={currentStep} />
+              </Suspense>
             </AnimatePresence>
           </div>
         </div>
 
         {/* Right sidebar - Assistant (Desktop) */}
         <div className="hidden md:block md:w-1/3 lg:w-1/4 mt-8 md:mt-24 sticky top-32 h-fit">
-          <SmartAssistant />
+          <Suspense fallback={<div className="flex justify-center p-8"><span className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></span></div>}>
+            <SmartAssistant />
+          </Suspense>
         </div>
       </main>
 
@@ -159,7 +164,9 @@ function App() {
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
             className="md:hidden fixed bottom-24 right-4 left-4 z-50 shadow-2xl rounded-2xl overflow-hidden"
           >
-            <SmartAssistant />
+            <Suspense fallback={<div className="flex justify-center p-8 bg-white dark:bg-slate-800"><span className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></span></div>}>
+              <SmartAssistant />
+            </Suspense>
           </motion.div>
         )}
       </AnimatePresence>
