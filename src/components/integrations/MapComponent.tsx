@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { mockPollingBooths } from '../../data/mockData';
-import { MapPin, Navigation, Info } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Info } from 'lucide-react';
+
 import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-maps/api';
 import { getEnvVar } from '../../utils/env';
 
